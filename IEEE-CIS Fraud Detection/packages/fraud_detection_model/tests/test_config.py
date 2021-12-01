@@ -1,22 +1,23 @@
-# Package name
-package_name: fraud_detection_model
+from pathlib import Path
 
-# Pipeline name
+from fraud_detection_model.config.core import (
+    create_and_validate_config,
+    fetch_config_from_yaml,
+)
+
+import pytest
+from pydantic import ValidationError
+
+TEST_CONFIG_TEXT = """
+package_name: fraud_detection_model
 pipeline_name: fraud_detection_model
 pipeline_save_file: fraud_detection_model_output_v
-
-# Data files
 train_transaction: train_transaction.csv
 test_transaction: test_transaction.csv
 train_identity: train_identity.csv
 test_identity: test_identity.csv
-
-# Target feature
 target: isFraud
-
-# features
 id: TransactionID
-
 train_transaction_usecols:
   - TransactionID
   - C3
@@ -129,7 +130,6 @@ train_transaction_usecols:
   - addr2
   - ProductCD
   - isFraud
-
 train_identity_usecols:
   - TransactionID
   - id_08
@@ -142,7 +142,6 @@ train_identity_usecols:
   - id_16
   - id_27
   - DeviceInfo
-
 test_transaction_usecols:
   - TransactionID
   - C3
@@ -254,7 +253,6 @@ test_transaction_usecols:
   - addr1
   - addr2
   - ProductCD
-
 test_identity_usecols:
   - TransactionID
   - id-08
@@ -267,7 +265,6 @@ test_identity_usecols:
   - id-16
   - id-27
   - DeviceInfo
-
 test_features_to_rename:
   id-08: id_08
   id-13: id_13
@@ -278,7 +275,6 @@ test_features_to_rename:
   id-26: id_26
   id-16: id_16
   id-27: id_27
-
 discrete_features:
   - V13
   - V14
@@ -301,7 +297,6 @@ discrete_features:
   - V301
   - V325
   - V328
-
 continuous_features:
   - TransactionDT
   - TransactionAmt
@@ -354,7 +349,6 @@ continuous_features:
   - V331
   - V332
   - V336
-
 high_cardinality_cats:
   - R_emaildomain
   - card1
@@ -369,7 +363,6 @@ high_cardinality_cats:
   - id_20
   - id_21
   - id_26
-
 convert_to_category_codes:
   - ProductCD
   - R_emaildomain
@@ -385,7 +378,6 @@ convert_to_category_codes:
   - id_20
   - id_21
   - id_26
-
 impute_most_freq_cols:
   - R_emaildomain
   - card2
@@ -420,7 +412,6 @@ impute_most_freq_cols:
   - V301
   - V325
   - V328
-
 all_features:
   - V13
   - V14
@@ -508,17 +499,41 @@ all_features:
   - id_21
   - id_26
   - ProductCD
-
-# Random state
 random_state: 25
-
-# Train test split
 test_size: 0.33
-
-# Estimator
 n_estimators: 100
 n_jobs: -1
+"""
+
+def test_fetch_config_structure(tmpdir):
+    # Given
+    # We make use of the pytest built-in tmpdir fixture
+    configs_dir = Path(tmpdir)
+    config_1 = configs_dir / "sample_config.yml"
+    config_1.write_text(TEST_CONFIG_TEXT)
+    parsed_config = fetch_config_from_yaml(cfg_path=config_1)
+
+    # When
+    config = create_and_validate_config(parsed_config=parsed_config)
+
+    # Then
+    assert config.model_config
+    assert config.app_config
 
 
+def test_missing_config_field_raises_validation_error(tmpdir):
+    # Given
+    # We make use of the pytest built-in tmpdir fixture
+    configs_dir = Path(tmpdir)
+    config_1 = configs_dir / "sample_config.yml"
+    TEST_CONFIG_TEXT = """package_name: fraud_detection_model"""
+    config_1.write_text(TEST_CONFIG_TEXT)
+    parsed_config = fetch_config_from_yaml(cfg_path=config_1)
 
+    # When
+    with pytest.raises(ValidationError) as excinfo:
+        create_and_validate_config(parsed_config=parsed_config)
 
+    # Then
+    assert "field required" in str(excinfo.value)
+    assert "pipeline_name" in str(excinfo.value)
