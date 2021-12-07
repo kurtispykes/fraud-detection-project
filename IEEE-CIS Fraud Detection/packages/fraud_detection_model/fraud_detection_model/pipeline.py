@@ -1,3 +1,5 @@
+import logging
+
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.pipeline import Pipeline
 
@@ -8,8 +10,6 @@ from fraud_detection_model.processing.features import (
     MeanImputer,
     MostFrequentImputer,
 )
-
-import logging
 
 _logger = logging.getLogger(__name__)
 

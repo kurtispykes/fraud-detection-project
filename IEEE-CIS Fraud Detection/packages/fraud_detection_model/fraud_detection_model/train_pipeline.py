@@ -1,15 +1,15 @@
-from sklearn.model_selection import train_test_split
+import logging
 
 from config.core import config
 from pipeline import fraud_detection_pipe
 from processing.data_manager import load_datasets, save_pipeline
+from sklearn.metrics import roc_auc_score
+from sklearn.model_selection import train_test_split
+
 from fraud_detection_model import __version__ as _version
 
-from sklearn.metrics import roc_auc_score
-
-import logging
-
 _logger = logging.getLogger(__name__)
+
 
 def run_training() -> None:
     """Train the model."""
@@ -38,6 +38,7 @@ def run_training() -> None:
     # persist trained model
     _logger.warning(f"saving model version: {_version}")
     save_pipeline(pipeline_to_persist=fraud_detection_pipe)
+
 
 if __name__ == "__main__":
     run_training()

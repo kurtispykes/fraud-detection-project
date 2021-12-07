@@ -31,36 +31,29 @@ def load_datasets(*, transaction: str, identity: str) -> pd.DataFrame:
 
     return dataframe
 
-def load_datasets_seperate(*, transaction: str, identity: str, nrows:int = None) -> pd.DataFrame:
+
+def load_datasets_seperate(
+    *, transaction: str, identity: str, nrows: int = None
+) -> pd.DataFrame:
     """
-      Load datasets but do not merge
-      :param transaction: first dataframe
-      :param identity: second dataframe
-      :return: Two Pandas DataFrames
-      """
+    Load datasets but do not merge
+    :param transaction: first dataframe
+    :param identity: second dataframe
+    :return: Two Pandas DataFrames
+    """
     df1 = pd.read_csv(
         Path(f"{DATASET_DIR}/{transaction}"),
         usecols=config.model_config.test_transaction_usecols,
-        nrows=nrows
+        nrows=nrows,
     )
 
     df2 = pd.read_csv(
         Path(f"{DATASET_DIR}/{identity}"),
         usecols=config.model_config.test_identity_usecols,
-        nrows=nrows
+        nrows=nrows,
     )
 
     return df1, df2
-
-def merge_datasets(*,
-                   transaction:pd.DataFrame,
-                   identity:pd.DataFrame) -> pd.DataFrame:
-    dataframe = pd.merge(transaction,
-                          identity,
-                          how="left",
-                          on=config.model_config.id
-                          )
-    return dataframe
 
 
 def save_pipeline(*, pipeline_to_persist: Pipeline) -> None:

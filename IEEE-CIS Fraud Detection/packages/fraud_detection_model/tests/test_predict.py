@@ -1,13 +1,14 @@
+from sklearn.metrics import roc_auc_score
+
 from fraud_detection_model import pipeline
 from fraud_detection_model.predict import make_prediction
-from sklearn.metrics import roc_auc_score
+
 
 def test_make_predict(sample_test_data):
     # Given
     transaction, identity = sample_test_data
 
-    results = make_prediction(transaction=transaction,
-                              identity=identity)
+    results = make_prediction(transaction=transaction, identity=identity)
 
     assert len(results["predictions"]) == len(transaction)
 
