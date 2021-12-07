@@ -5,6 +5,7 @@ import numpy as np
 import pandas as pd
 from sklearn.base import BaseEstimator, TransformerMixin
 
+
 class AggregateCategorical(BaseEstimator, TransformerMixin):
     """
     Reduces the cardinality of categorical features
@@ -82,6 +83,7 @@ class MostFrequentImputer(BaseEstimator, TransformerMixin):
         for feature in self.features:
             X[feature] = X[feature].fillna(self.imputer_dict_[feature])
         return X
+
 
 class MeanImputer(BaseEstimator, TransformerMixin):
     """

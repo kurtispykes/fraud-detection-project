@@ -1,12 +1,12 @@
 from pathlib import Path
 
+import pytest
+from pydantic import ValidationError
+
 from fraud_detection_model.config.core import (
     create_and_validate_config,
     fetch_config_from_yaml,
 )
-
-import pytest
-from pydantic import ValidationError
 
 TEST_CONFIG_TEXT = """
 package_name: fraud_detection_model
@@ -504,6 +504,7 @@ test_size: 0.33
 n_estimators: 100
 n_jobs: -1
 """
+
 
 def test_fetch_config_structure(tmpdir):
     # Given
