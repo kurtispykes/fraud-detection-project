@@ -1,7 +1,7 @@
 import logging
 
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.pipeline import Pipeline
+from sklearn.ensemble import RandomForestClassifier  # type: ignore
+from sklearn.pipeline import Pipeline  # type: ignore
 
 from fraud_detection_model.config.core import config
 from fraud_detection_model.processing.features import (
