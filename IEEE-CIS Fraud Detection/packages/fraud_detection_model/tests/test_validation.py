@@ -1,4 +1,3 @@
-from fraud_detection_model.config.core import config
 from fraud_detection_model.processing.validation import validate_inputs
 
 
@@ -7,8 +6,9 @@ def test_validate_inputs(sample_test_data):
     transaction, identity = sample_test_data
 
     # When
-    validated_inputs, errors = validate_inputs(transaction=transaction,
-                                               identity=identity)
+    validated_inputs, errors = validate_inputs(
+        transaction=transaction, identity=identity
+    )
     # Then
     assert not errors
 
@@ -25,8 +25,9 @@ def test_validate_inputs_identifies_errors(sample_test_data):
     transaction.loc[0, "TransactionAmt"] = "Kurtis"  # we expect a float
 
     # When
-    validated_inputs, errors = validate_inputs(transaction=transaction,
-                                               identity=identity)
+    validated_inputs, errors = validate_inputs(
+        transaction=transaction, identity=identity
+    )
 
     # Then
     assert errors

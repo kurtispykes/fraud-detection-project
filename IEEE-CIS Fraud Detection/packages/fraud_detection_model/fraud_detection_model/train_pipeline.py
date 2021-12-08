@@ -1,10 +1,9 @@
 import logging
 
-from config.core import config
-from pipeline import fraud_detection_pipe
-from processing.data_manager import load_datasets, save_pipeline
-from sklearn.metrics import roc_auc_score
-from sklearn.model_selection import train_test_split
+from config.core import config  # type: ignore
+from pipeline import fraud_detection_pipe  # type: ignore
+from processing.data_manager import load_datasets, save_pipeline  # type: ignore
+from sklearn.model_selection import train_test_split  # type: ignore
 
 from fraud_detection_model import __version__ as _version
 

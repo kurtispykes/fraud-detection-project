@@ -1,9 +1,9 @@
 import typing as t
 from pathlib import Path
 
-import joblib
-import pandas as pd
-from sklearn.pipeline import Pipeline
+import joblib  # type: ignore
+import pandas as pd  # type: ignore
+from sklearn.pipeline import Pipeline  # type: ignore
 
 from fraud_detection_model import __version__ as _version
 from fraud_detection_model.config.core import DATASET_DIR, TRAINED_MODEL_DIR, config

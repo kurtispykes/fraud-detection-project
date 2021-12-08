@@ -2,7 +2,7 @@ from pathlib import Path
 from typing import Dict, List
 
 from pydantic import BaseModel
-from strictyaml import YAML, load
+from strictyaml import YAML, load  # type: ignore
 
 import fraud_detection_model
 

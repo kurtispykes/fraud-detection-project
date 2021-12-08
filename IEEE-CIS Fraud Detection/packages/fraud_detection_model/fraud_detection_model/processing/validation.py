@@ -1,27 +1,26 @@
 import typing as t
 
+import numpy as np
+import pandas as pd  # type: ignore
+from marshmallow import Schema, ValidationError, fields
+
 from fraud_detection_model.config.core import config
 
-import numpy as np
-import pandas as pd
-from marshmallow import fields, Schema, ValidationError, INCLUDE
 
-def merge_datasets(*,
-                   transaction: pd.DataFrame,
-                   identity: pd.DataFrame) -> pd.DataFrame:
+def merge_datasets(
+    *, transaction: pd.DataFrame, identity: pd.DataFrame
+) -> pd.DataFrame:
     dataframe = pd.merge(transaction, identity, how="left", on=config.model_config.id)
     return dataframe
 
 
-def validate_inputs(*,
-                    transaction: pd.DataFrame,
-                    identity: pd.DataFrame
-                    ) -> t.Tuple[pd.DataFrame, t.Optional[dict]]:
+def validate_inputs(
+    *, transaction: pd.DataFrame, identity: pd.DataFrame
+) -> t.Tuple[t.Any, t.Union[t.List[str], t.List[t.Any], t.Dict[t.Any, t.Any], None]]:
     """Check model inputs for unprocessable values."""
 
     # merge datasets together on TransactionID
-    dataset = merge_datasets(transaction=transaction,
-                             identity=identity)
+    dataset = merge_datasets(transaction=transaction, identity=identity)
     validated_data = dataset.rename(columns=config.model_config.test_features_to_rename)
 
     # set many=True to allow passing in a list
@@ -36,6 +35,7 @@ def validate_inputs(*,
         errors = exc.messages
 
     return validated_data, errors
+
 
 class TransactionAndIdentityInputData(Schema):
     V13 = fields.Float(allow_none=True)

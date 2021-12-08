@@ -1,9 +1,9 @@
+import typing as t
 from collections import Counter, defaultdict
-from typing import List, Union
 
 import numpy as np
-import pandas as pd
-from sklearn.base import BaseEstimator, TransformerMixin
+import pandas as pd  # type: ignore
+from sklearn.base import BaseEstimator, TransformerMixin  # type: ignore
 
 
 class AggregateCategorical(BaseEstimator, TransformerMixin):
@@ -28,7 +28,7 @@ class AggregateCategorical(BaseEstimator, TransformerMixin):
         Drops the explicitly selected features
     """
 
-    def __init__(self, features: List[Union[str, int]], threshold: float = 0.75):
+    def __init__(self, features: t.List[str], threshold: float = 0.75):
         if not isinstance(features, list) or len(features) == 0:
             raise ValueError("Was expecting a list of features")
         self.features = features
@@ -40,7 +40,7 @@ class AggregateCategorical(BaseEstimator, TransformerMixin):
 
         self.agg_values_ = defaultdict(list)
         for col in self.features:
-            counts = Counter(df[col])
+            counts = Counter(df[col])  # type: t.Counter[dict]
             s = 0
             # Loop through the category name and its corresponding frequency
             for i, j in counts.most_common():
@@ -66,12 +66,12 @@ class MostFrequentImputer(BaseEstimator, TransformerMixin):
     Credit: https://bit.ly/3r2N40k
     """
 
-    def __init__(self, features):
+    def __init__(self, features: t.List[str]):
         if not isinstance(features, list) or len(features) == 0:
             raise ValueError("Was expecting a list of features")
 
         self.features = features
-        self.imputer_dict_ = {}
+        self.imputer_dict_ = {}  # type: dict
 
     def fit(self, X, y=None):
         for feature in self.features:
@@ -91,12 +91,12 @@ class MeanImputer(BaseEstimator, TransformerMixin):
     Credit: https://bit.ly/3r2N40k
     """
 
-    def __init__(self, features):
+    def __init__(self, features: t.List[str]):
         if not isinstance(features, list) or len(features) == 0:
             raise ValueError("Was expecting a list of features")
 
         self.features = features
-        self.imputer_dict_ = {}
+        self.imputer_dict_ = {}  # type: dict
 
     def fit(self, X, y=None):
         # persist mode in a dictionary
@@ -112,7 +112,7 @@ class MeanImputer(BaseEstimator, TransformerMixin):
 
 
 class CategoryConverter(BaseEstimator, TransformerMixin):
-    def __init__(self, features):
+    def __init__(self, features: t.List[str]):
         if not isinstance(features, list) or len(features) == 0:
             raise ValueError("Was expecting a list of features")
 

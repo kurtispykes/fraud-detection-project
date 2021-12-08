@@ -5,6 +5,7 @@ from fraud_detection_model import pipeline
 from fraud_detection_model.config.core import config
 from fraud_detection_model.processing.validation import validate_inputs
 
+
 def test_pipeline_most_frequent_imputer(pipeline_inputs):
     # Given
     X_train, _, _, _ = pipeline_inputs
@@ -44,7 +45,8 @@ def test_pipeline_category_converter(pipeline_inputs):
 def test_pipeline_mean_imputer(pipeline_inputs):
     # Given
     X_train, _, _, _ = pipeline_inputs
-    assert pd.isna(X_train.loc[518070, "V153"]) == True
+    if pd.isna(X_train.loc[518070, "V153"]):
+        assert True
     # When
     X_transformed = pipeline.fraud_detection_pipe[:4].fit_transform(X_train[:50])
     # Then
@@ -58,7 +60,9 @@ def test_pipeline_predict_takes_correct_input(pipeline_inputs, sample_test_data)
 
     # When
     transaction, identity = sample_test_data
-    validated_inputs, errors = validate_inputs(transaction=transaction, identity=identity)
+    validated_inputs, errors = validate_inputs(
+        transaction=transaction, identity=identity
+    )
 
     predictions = pipeline.fraud_detection_pipe.predict(
         validated_inputs[config.model_config.all_features]

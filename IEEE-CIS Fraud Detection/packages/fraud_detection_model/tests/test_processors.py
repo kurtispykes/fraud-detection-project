@@ -1,5 +1,5 @@
 import pandas as pd
-from pandas.api.types import is_categorical_dtype, is_object_dtype
+from pandas.api.types import is_categorical_dtype
 
 from fraud_detection_model.config.core import config
 from fraud_detection_model.processing import features as f
@@ -46,7 +46,7 @@ def test_aggregate_categorical(pipeline_inputs):
 def test_category_converter(pipeline_inputs):
     # Given
     X_train, X_test, y_train, y_test = pipeline_inputs
-    assert is_object_dtype(X_train["ProductCD"])
+    assert not is_categorical_dtype(X_train["ProductCD"])
 
     # When
     transformer = f.CategoryConverter(["ProductCD"])
@@ -60,7 +60,7 @@ def test_mean_imputer(pipeline_inputs):
     # Given
     X_train, X_test_, y_train, y_test = pipeline_inputs
 
-    assert pd.isna(X_train.loc[518070, "V153"]) == True
+    assert pd.isna(X_train.loc[518070, "V153"])
 
     transformer = f.MeanImputer(features=config.model_config.continuous_features)
 
