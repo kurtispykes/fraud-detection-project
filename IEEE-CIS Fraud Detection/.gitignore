@@ -106,8 +106,13 @@ venv.bak/
 # pycharm
 .idea/
 
-# pickle files
+# trained models
 *.pkl
+packages/fraud_detection_model/fraud_detection_model/models/*.h5
+packages/fraud_detection_model/fraud_detection_model/models/*.pkl
 
 # datafiles
+*.csv
 data/*.csv
+packages/fraud_detection_model/fraud_detection_model/data/interim/*.csv
+packages/fraud_detection_model/fraud_detection_model/data/raw/*.csv
