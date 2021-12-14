@@ -4,7 +4,7 @@ from sklearn.model_selection import train_test_split
 from fraud_detection_model.config.core import config
 from fraud_detection_model.processing.data_manager import (
     load_datasets,
-    load_datasets_seperate,
+    load_interim_data,
 )
 
 
@@ -29,20 +29,4 @@ def pipeline_inputs():
 
 @pytest.fixture
 def sample_test_data():
-    transaction, identity = load_datasets_seperate(
-        transaction=config.app_config.test_transaction,
-        identity=config.app_config.test_identity,
-        nrows=500,
-    )
-
-    initial_ids = transaction.loc[:500, config.model_config.id]
-    identity_sample = identity.loc[identity["TransactionID"].isin(initial_ids)].copy()
-
-    sample_ids = identity_sample["TransactionID"]
-
-    transaction_sample = transaction.loc[
-        transaction["TransactionID"].isin(sample_ids)
-    ].copy()
-    transaction_sample.reset_index(drop=True, inplace=True)
-
-    return transaction_sample, identity_sample
+    return load_interim_data(data=config.app_config.interim_test_data, nrows=50)

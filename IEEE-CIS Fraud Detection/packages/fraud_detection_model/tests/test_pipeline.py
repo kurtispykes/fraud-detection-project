@@ -59,10 +59,8 @@ def test_pipeline_predict_takes_correct_input(pipeline_inputs, sample_test_data)
     pipeline.fraud_detection_pipe.fit(X_train.loc[:100], y_train.loc[:100])
 
     # When
-    transaction, identity = sample_test_data
-    validated_inputs, errors = validate_inputs(
-        transaction=transaction, identity=identity
-    )
+    dataset = sample_test_data
+    validated_inputs, errors = validate_inputs(inputs=dataset)
 
     predictions = pipeline.fraud_detection_pipe.predict(
         validated_inputs[config.model_config.all_features]
