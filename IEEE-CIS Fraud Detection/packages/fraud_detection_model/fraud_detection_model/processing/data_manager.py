@@ -6,54 +6,75 @@ import pandas as pd  # type: ignore
 from sklearn.pipeline import Pipeline  # type: ignore
 
 from fraud_detection_model import __version__ as _version
-from fraud_detection_model.config.core import DATASET_DIR, TRAINED_MODEL_DIR, config
+from fraud_detection_model.config.core import (
+    INTERIM_DATA_DIR,
+    RAW_DATA_DIR,
+    TRAINED_MODEL_DIR,
+    config,
+)
 
 
-def load_datasets(*, transaction: str, identity: str) -> pd.DataFrame:
+def load_datasets(
+    *,
+    transaction: str,
+    identity: str,
+    save: bool = False,
+    save_as: str = None,
+    train: bool = True,
+) -> pd.DataFrame:
     """
-    Load and merge training data
+    Load, merge, and save data
     :param train_transaction: first dataframe
     :param train_identity: second dataframe
+    :param save: True if you wish to save the merged
+                 dataset, False if otherwise.
+    :param save_as: name to save file as
+    :param train: the data being loaded is train data
     :return: Pandas DataFrame
     """
+    transaction_use_cols = None
+    identity_use_cols = None
+
+    if train:
+        transaction_use_cols = config.model_config.train_transaction_usecols
+        identity_use_cols = config.model_config.train_identity_usecols
+    else:
+        transaction_use_cols = config.model_config.test_transaction_usecols
+        identity_use_cols = config.model_config.test_identity_usecols
 
     df1 = pd.read_csv(
-        Path(f"{DATASET_DIR}/{transaction}"),
-        usecols=config.model_config.train_transaction_usecols,
+        Path(f"{RAW_DATA_DIR}/{transaction}"), usecols=transaction_use_cols
     )
-    df2 = pd.read_csv(
-        Path(f"{DATASET_DIR}/{identity}"),
-        usecols=config.model_config.train_identity_usecols,
-    )
+    df2 = pd.read_csv(Path(f"{RAW_DATA_DIR}/{identity}"), usecols=identity_use_cols)
 
     # merge the dataframe
     dataframe = pd.merge(df1, df2, how="left", on=config.model_config.id)
 
+    if save:
+        dataframe.to_csv(f"{INTERIM_DATA_DIR}/{save_as}", index=False)
+
     return dataframe
 
 
-def load_datasets_seperate(
-    *, transaction: str, identity: str, nrows: int = None
-) -> pd.DataFrame:
-    """
-    Load datasets but do not merge
-    :param transaction: first dataframe
-    :param identity: second dataframe
-    :return: Two Pandas DataFrames
-    """
-    df1 = pd.read_csv(
-        Path(f"{DATASET_DIR}/{transaction}"),
-        usecols=config.model_config.test_transaction_usecols,
-        nrows=nrows,
+def load_interim_data(*, data: str, train: bool = False, nrows: int = None):
+    usecols = None
+
+    if train:
+        usecols = (
+            config.model_config.train_transaction_usecols
+            + config.model_config.train_identity_usecols
+        )
+    else:
+        usecols = (
+            config.model_config.test_transaction_usecols
+            + config.model_config.test_identity_usecols
+        )
+
+    dataset = pd.read_csv(
+        Path(f"{INTERIM_DATA_DIR}/{data}"), usecols=usecols, nrows=nrows
     )
 
-    df2 = pd.read_csv(
-        Path(f"{DATASET_DIR}/{identity}"),
-        usecols=config.model_config.test_identity_usecols,
-        nrows=nrows,
-    )
-
-    return df1, df2
+    return dataset
 
 
 def save_pipeline(*, pipeline_to_persist: Pipeline) -> None:

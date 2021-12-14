@@ -11,6 +11,8 @@ PACKAGE_ROOT = Path(fraud_detection_model.__file__).resolve().parent
 ROOT = PACKAGE_ROOT.parent
 CONFIG_FILE_PATH = PACKAGE_ROOT / "config.yml"
 DATASET_DIR = PACKAGE_ROOT / "data"
+RAW_DATA_DIR = DATASET_DIR / "raw"
+INTERIM_DATA_DIR = DATASET_DIR / "interim"
 TRAINED_MODEL_DIR = PACKAGE_ROOT / "models"
 
 
@@ -26,6 +28,8 @@ class AppConfig(BaseModel):
     pipeline_save_file: str
     test_transaction: str
     test_identity: str
+    interim_train_data: str
+    interim_test_data: str
 
 
 class ModelConfig(BaseModel):

@@ -6,11 +6,11 @@ from fraud_detection_model.predict import make_prediction
 
 def test_make_predict(sample_test_data):
     # Given
-    transaction, identity = sample_test_data
+    dataset = sample_test_data
 
-    results = make_prediction(transaction=transaction, identity=identity)
+    results = make_prediction(inputs=dataset)
 
-    assert len(results["predictions"]) == len(transaction)
+    assert len(results["predictions"]) == len(dataset)
 
 
 def test_prediction_quality_against_benchmark(pipeline_inputs):

@@ -17,13 +17,24 @@ def run_training() -> None:
     dataset = load_datasets(
         transaction=config.app_config.train_transaction,
         identity=config.app_config.train_identity,
+        save=True,
+        save_as=config.app_config.interim_train_data,
+    )
+
+    # creating test data for testing
+    _ = load_datasets(
+        transaction=config.app_config.test_transaction,
+        identity=config.app_config.test_identity,
+        train=False,
+        save=True,
+        save_as=config.app_config.interim_test_data,
     )
 
     X = dataset[config.model_config.all_features]
     y = dataset[config.model_config.target]
 
     # divide train and test
-    X_train, X_test, y_train, y_test = train_test_split(
+    X_train, _, y_train, _ = train_test_split(
         X,
         y,
         test_size=config.model_config.test_size,

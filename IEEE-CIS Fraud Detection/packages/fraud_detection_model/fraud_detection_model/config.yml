@@ -10,6 +10,8 @@ train_transaction: train_transaction.csv
 test_transaction: test_transaction.csv
 train_identity: train_identity.csv
 test_identity: test_identity.csv
+interim_train_data: train.csv
+interim_test_data: test.csv
 
 # Target feature
 target: isFraud

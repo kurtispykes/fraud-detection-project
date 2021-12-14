@@ -7,21 +7,9 @@ from pydantic import BaseModel, ValidationError
 from fraud_detection_model.config.core import config
 
 
-def merge_datasets(
-    *, transaction: pd.DataFrame, identity: pd.DataFrame
-) -> pd.DataFrame:
-    dataframe = pd.merge(transaction, identity, how="left", on=config.model_config.id)
-    return dataframe
-
-
-def validate_inputs(
-    *, transaction: pd.DataFrame, identity: pd.DataFrame
-) -> t.Tuple[t.Any, t.Optional[str]]:
+def validate_inputs(*, inputs: pd.DataFrame) -> t.Tuple[t.Any, t.Optional[str]]:
     """Check model inputs for unprocessable values."""
-
-    # merge datasets together on TransactionID
-    dataset = merge_datasets(transaction=transaction, identity=identity)
-    validated_data = dataset.rename(columns=config.model_config.test_features_to_rename)
+    validated_data = inputs.rename(columns=config.model_config.test_features_to_rename)
 
     # replace numpy nans so that Marshmallow can validate
     data_ = validated_data.replace({np.nan: None}).to_dict(orient="records")
