@@ -3,10 +3,7 @@ include *.md
 include *.pkl
 recursive-include ./fraud_detection_model/*
 
-include fraud_detection_model/data/train_transaction.csv
-include fraud_detection_model/data/test_transaction.csv
-include fraud_detection_model/data/train_identity.csv
-include fraud_detection_model/data/test_identity.csv
+include fraud_detection_model/data/interim/*.csv
 include fraud_detection_model/trained_models/*.pkl
 include fraud_detection_model/VERSION
 include fraud_detection_model/config.yml
