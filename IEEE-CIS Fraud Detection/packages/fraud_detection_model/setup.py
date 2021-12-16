@@ -3,7 +3,7 @@ from pathlib import Path
 from setuptools import find_packages, setup
 
 # Package meta-data.
-NAME = 'fraud-detection-model'
+NAME = 'fraud_detection_model'
 DESCRIPTION = "Classification model to predict events of fraud."
 URL = "https://github.com/kurtispykes/Portfolio-Projects/tree/main/IEEE-CIS%20Fraud%20Detection"
 EMAIL = "kurtispykes@gmail.com"
