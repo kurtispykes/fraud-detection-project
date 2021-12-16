@@ -30,6 +30,10 @@ def make_prediction(*, inputs: t.Union[pd.DataFrame, dict]) -> dict:
             f"Making predictions with model version: {_version} "
             f"Predictions: {predictions}"
         )
-        results = {"predictions": predictions, "version": _version, "errors": errors}
+        results = {
+            "predictions": predictions.tolist(),
+            "version": _version,
+            "errors": errors,
+        }
 
     return results
