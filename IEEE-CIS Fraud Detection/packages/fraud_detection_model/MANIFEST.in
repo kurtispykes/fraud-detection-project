@@ -4,7 +4,7 @@ include *.pkl
 recursive-include ./fraud_detection_model/*
 
 include fraud_detection_model/data/interim/*.csv
-include fraud_detection_model/trained_models/*.pkl
+include fraud_detection_model/models/*.pkl
 include fraud_detection_model/VERSION
 include fraud_detection_model/config.yml
 
