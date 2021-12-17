@@ -76,7 +76,7 @@ tags_only: &tags_only
 
 workflows:
   version: 2
-  section_07:
+  fraud_detection:
     jobs:
       - test_api_app
       - deploy_api_app_to_heroku:
