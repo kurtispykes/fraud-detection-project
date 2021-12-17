@@ -1,5 +1,5 @@
 --extra-index-url=${PIP_EXTRA_INDEX_URL}
-fraud-detection-model==2.0.0
+fraud-detection-model==2.1.0
 
 uvicorn>=0.11.3,<0.12.0
 fastapi>=0.64.0,<1.0.0
