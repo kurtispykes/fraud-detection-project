@@ -67,6 +67,13 @@ jobs:
             tox -e publish_model
 
 
+tags_only: &tags_only
+  filters:
+    branches:
+      ignore: /.*/
+    tags:
+      only: /^.*/
+
 workflows:
   version: 2
   section_07:
