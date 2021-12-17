@@ -1,3 +1,4 @@
+--extra-index-url=${PIP_EXTRA_INDEX_URL}
 fraud-detection-model==2.0.0
 
 uvicorn>=0.11.3,<0.12.0
