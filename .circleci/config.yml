@@ -67,6 +67,30 @@ jobs:
             tox -e publish_model
 
 
+  deploy_api_app_container_in_heroku:
+    <<: *defaults
+    steps:
+      - setup_remote_docker:
+          # Supported versions: https://circleci.com/docs/2.0/building-docker-images/#docker-version
+          version: 20.10.6
+      - checkout:
+          path: ~/project
+      - run:
+          name: Build image
+          command: |
+            sudo curl https://cli-assets.heroku.com/install.sh | sh
+            cd IEEE-CIS Fraud Detection/packages && make build-ml-api-heroku
+      - run:
+          name: Push Image to Heroku
+          command: |
+            # Push the built container to the Heroku image registry
+            cd IEEE-CIS Fraud Detection/packages && make push-ml-api-heroku
+      - run:
+          name: Release to Heroku
+          command: |
+            cd IEEE-CIS Fraud Detection/packages && make release-heroku
+
+
 tags_only: &tags_only
   filters:
     branches:
@@ -89,3 +113,8 @@ workflows:
       # upload after git tags are created
       - test_and_upload_fraud_detection_model:
           <<: *tags_only
+      - deploy_api_app_container_in_heroku:
+          filters:
+            branches:
+              only:
+                - master

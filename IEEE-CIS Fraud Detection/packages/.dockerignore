@@ -1,0 +1,10 @@
+jupyter_notebooks*
+*/env*
+*/venv*
+.circleci*
+packages/fraud_detection_model
+*.env
+*.log
+.git
+.gitignore
+.tox
