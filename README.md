@@ -3,8 +3,7 @@ IEEE-CIS Fraud Detection challenge was first hosted by Kaggle in 2019. The idea 
 to detect fraud from customer transactions. While IEEE-CIS already have a fraud prevention system in place, researchers
 were looking for ways to improve the current figure being saved by the system, and improve the customer experience.
 
-## Installation
-### Downloading the Data
+## Usage
 Clone this repository to your computer. 
 To view explorations navigate to the project directory cd IEEE-CIS Fraud Detection from 
 your terminal then cd into the `notebooks` directory. This directory contains data analysis
@@ -21,7 +20,7 @@ This will create a localhost link, simply click it or copy and paste it into you
 browser. Then select the docs option and go to the `predict` heading. There is already
 an example instance there, but you may play around with the values.
 
-### Extending This Work
+## Extending This Work
 Some ideas to extend this work:
 - Replace the model 
 - Add monitoring 
